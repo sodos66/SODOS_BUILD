@@ -1,0 +1,16 @@
+{
+  "clusters": [
+    {
+      "name": "kline-cluster",
+      "uri": "http://elasticsearch_kline:9200",
+      "username": "elastic",
+      "password": "SoDosP6zodC9qB2N2Q3b1slZp7Pdx4",
+      "distribution": "elasticsearch"
+    }
+  ],
+  "theme": "dark",
+  "language": "en",
+  "hideIndices": false,
+  "stickyTableHeader": true,
+  "queryMode": "query_string"
+}

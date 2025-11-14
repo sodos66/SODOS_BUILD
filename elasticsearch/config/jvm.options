@@ -1,0 +1,26 @@
+# JVM配置 - 针对4GB内存优化，兼容Java 17+
+
+# 堆内存设置
+-Xms2g
+-Xmx4g
+
+# GC配置 - 使用G1GC
+-XX:+UseG1GC
+-XX:MaxGCPauseMillis=200
+
+# 内存优化
+-XX:+AlwaysPreTouch
+-Xss1m
+-Djava.awt.headless=true
+
+# 错误处理
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:HeapDumpPath=data
+
+# JVM优化
+-XX:+UseCompressedOops
+-XX:+UseCompressedClassPointers
+
+# 网络优化
+-Djava.net.preferIPv4Stack=true
+-Dfile.encoding=UTF-8
