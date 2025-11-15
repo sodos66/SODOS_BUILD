@@ -206,7 +206,7 @@ services:
 
   # SODOS Exchange Run Server
   sodos_runserver:
-    image: sodos66/sodos_run_server:prod
+    image: sodos66/exchange_run_server:prod
     container_name: sodos_runserver
     restart: unless-stopped
     ports:
