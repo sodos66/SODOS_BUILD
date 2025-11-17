@@ -21,7 +21,7 @@ services:
           memory: 512M
           cpus: "0.5"
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "SoDosP6zodC9qB2N2Q3b1slZp7Pdx4", "ping"]
+      test: ["CMD", "redis-cli", "-a", "{redis_password}", "ping"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -49,7 +49,7 @@ services:
           memory: 512M
           cpus: "0.5"
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "SoDosP6zodC9qB2N2Q3b1slZp7Pdx4", "ping"]
+      test: ["CMD", "redis-cli", "-a", "{redis_password}", "ping"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -64,7 +64,7 @@ services:
       - "9200:9200"
       - "9300:9300"
     environment:
-      - ELASTIC_PASSWORD=SoDosP6zodC9qB2N2Q3b1slZp7Pdx4
+      - ELASTIC_PASSWORD={es_password}
       - ELASTIC_USERNAME=elastic
       - "ES_JAVA_OPTS=-Xms2g -Xmx4g"
       - bootstrap.memory_lock=true
@@ -82,8 +82,8 @@ services:
     deploy:
       resources:
         limits:
-          memory: 4G
-          cpus: "2.0"
+          memory: 8G
+          cpus: "4.0"
         reservations:
           memory: 1G
           cpus: "0.5"
@@ -98,69 +98,69 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -u elastic:SoDosP6zodC9qB2N2Q3b1slZp7Pdx4 -f http://localhost:9200/_cluster/health || exit 1",
+          "curl -u elastic:{es_password} -f http://localhost:9200/_cluster/health || exit 1",
         ]
       interval: 30s
       timeout: 10s
       retries: 5
       start_period: 60s
 
-  # ElasticVue - Elasticsearch管理界面
-  elasticvue:
-    image: cars10/elasticvue:latest
-    container_name: elasticvue
-    restart: unless-stopped
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./elasticvue/config/config.json:/usr/share/nginx/html/api/config.json:ro
-    environment:
-      - ELASTICVUE_CLUSTERS=[{"name":"kline-cluster","uri":"http://elasticsearch:9200","username":"elastic","password":"SoDosP6zodC9qB2N2Q3b1slZp7Pdx4"}]
-    networks:
-      - data_network
-    depends_on:
-      - elasticsearch
-    deploy:
-      resources:
-        limits:
-          memory: 512M
-          cpus: "0.5"
-        reservations:
-          memory: 128M
-          cpus: "0.1"
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080 || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
+  # ElasticVue - Elasticsearch管理界面 - 可选，可单独部署作为调试查看管理使用 - 单独部署独立拷贝dockerfile
+  #  elasticvue:
+  #    image: cars10/elasticvue:latest
+  #    container_name: elasticvue
+  #    restart: unless-stopped
+  #    ports:
+  #      - "8080:8080"
+  #    volumes:
+  #      - ./elasticvue/config/config.json:/usr/share/nginx/html/api/config.json:ro
+  #    environment:
+  #      - ELASTICVUE_CLUSTERS=[{"name":"kline-cluster","uri":"http://elasticsearch:9200","username":"elastic","password":"DmUYTbggA6JMPDrkmqykuLfgp5raj3"}]
+  #    networks:
+  #      - data_network
+  #    depends_on:
+  #      - elasticsearch
+  #    deploy:
+  #      resources:
+  #        limits:
+  #          memory: 512M
+  #          cpus: "0.5"
+  #        reservations:
+  #          memory: 128M
+  #          cpus: "0.1"
+  #    healthcheck:
+  #      test: ["CMD-SHELL", "curl -f http://localhost:8080 || exit 1"]
+  #      interval: 30s
+  #      timeout: 10s
+  #      retries: 3
+  #      start_period: 30s
 
-  # LibreTranslate - 翻译服务
-  libretranslate:
-    image: libretranslate/libretranslate:latest
-    container_name: libretranslate
-    restart: unless-stopped
-    ports:
-      - "9000:5000"
-    environment:
-      - LT_DISABLE_WEB_UI=false
-      - LT_DISABLE_FILES_TRANSLATION=false
-    networks:
-      - data_network
-    deploy:
-      resources:
-        limits:
-          memory: 2G
-          cpus: "2.0"
-        reservations:
-          memory: 512M
-          cpus: "0.5"
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:5000/health || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
+  # LibreTranslate - 翻译服务 - 暂时不需要
+  #  libretranslate:
+  #    image: libretranslate/libretranslate:latest
+  #    container_name: libretranslate
+  #    restart: unless-stopped
+  #    ports:
+  #      - "9000:5000"
+  #    environment:
+  #      - LT_DISABLE_WEB_UI=false
+  #      - LT_DISABLE_FILES_TRANSLATION=false
+  #    networks:
+  #      - data_network
+  #    deploy:
+  #      resources:
+  #        limits:
+  #          memory: 2G
+  #          cpus: "2.0"
+  #        reservations:
+  #          memory: 512M
+  #          cpus: "0.5"
+  #    healthcheck:
+  #      test: ["CMD-SHELL", "curl -f http://localhost:5000/health || exit 1"]
+  #      interval: 30s
+  #      timeout: 10s
+  #      retries: 3
+  #      start_period: 60s
 
   # MySQL 数据库
   mysql:
@@ -170,10 +170,10 @@ services:
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=zOffP6yF6v4VIbaPoNn0veoMOumhzBCQCvoafV36qZ9s3xqZaBn3E7IGDR5KKaDg
+      - MYSQL_ROOT_PASSWORD={db_password}
       - MYSQL_DATABASE=sodos_exchange
       - MYSQL_USER=sodos_exchange
-      - MYSQL_PASSWORD=SoDosP6zodC9qB2N2Q3b1slZp7Pdx4
+      - MYSQL_PASSWORD={db_password}
     volumes:
       - ./mysql/config/production.cnf:/etc/mysql/conf.d/production.cnf:ro
       - ./mysql/data:/var/lib/mysql
@@ -183,7 +183,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 4G
+          memory: 8G
           cpus: "4.0"
         reservations:
           memory: 1G
@@ -194,7 +194,7 @@ services:
           "CMD",
           "mysqladmin",
           "-uroot",
-          "-p zOffP6yF6v4VIbaPoNn0veoMOumhzBCQCvoafV36qZ9s3xqZaBn3E7IGDR5KKaDg",
+          "-p{db_password}",
           "ping",
           "-h",
           "127.0.0.1",
@@ -206,7 +206,7 @@ services:
 
   # SODOS Exchange Run Server
   sodos_runserver:
-    image: sodos66/exchange_run_server:prod
+    image: cpxexchange/run_server:prod
     container_name: sodos_runserver
     restart: unless-stopped
     ports:
@@ -243,13 +243,14 @@ services:
 
   # 管理后台前端
   sodos_manager:
-    image: sodos66/sodos_admin:prod
+    image: sodos66/exchange_admin:prod
     container_name: sodos_manager
     restart: unless-stopped
     ports:
       - "9520:80"
     volumes:
       - ./logs/manager:/var/log/nginx
+    user: "root"
     networks:
       - data_network
 
