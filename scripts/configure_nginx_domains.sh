@@ -101,7 +101,7 @@ PY
     printf "  %s -> %s\n" "${placeholders[$i]}" "${final_domains[$i]}"
   done
 
-  local env_file="app/CPX_EXCHANGE/.env"
+  local env_file="app/SODOS_EXCHANGE/.env"
   if [ -f "$env_file" ]; then
     local api_url="https://${final_domains[0]}"
     tmp_file=$(mktemp)

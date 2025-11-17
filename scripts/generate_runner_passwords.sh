@@ -5,7 +5,7 @@ ROOT_TEMPLATE="${RUNNER_COMPOSE_TEMPLATE:-runner-compose.temp.yml}"
 DEFAULT_TEMPLATES=(
   "redis_market/redis.temp.conf"
   "redis_cache/redis.temp.conf"
-  "app/CPX_EXCHANGE/prod.temp.env"
+  "app/SODOS_EXCHANGE/prod.temp.env"
 )
 
 if ! command -v python3 >/dev/null 2>&1; then
@@ -133,9 +133,9 @@ for name, password in replacements.items():
     print(f"  {name}: {password}")
 PY
 
-ENV_TEMPLATE="app/CPX_EXCHANGE/prod.temp.env"
+ENV_TEMPLATE="app/SODOS_EXCHANGE/prod.temp.env"
 ENV_OUTPUT="${ENV_TEMPLATE/.temp/}"
-ENV_DEST="app/CPX_EXCHANGE/.env"
+ENV_DEST="app/SODOS_EXCHANGE/.env"
 
 if [ -f "$ENV_OUTPUT" ]; then
   cp "$ENV_OUTPUT" "$ENV_DEST"
