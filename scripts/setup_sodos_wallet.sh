@@ -3,7 +3,7 @@ set -euo pipefail
 
 REPO_URL="https://github.com/sodos66/SODOS_WALLET.git"
 REPO_DIR="${REPO_DIR:-$PWD/SODOS_WALLET}"
-BRANCH="${BRANCH:-master}"
+BRANCH="${BRANCH:-main}"
 
 log() {
   printf '[%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*"

@@ -1,4 +1,4 @@
-FROM nginx:1.25-alpine
+1FROM nginx:1.25-alpine
 
 RUN apk add --no-cache unzip
 
