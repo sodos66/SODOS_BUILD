@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  sodos_site:
+    image: sodos66/sodos_site:prod
+    container_name: sodos_site
+    restart: unless-stopped
+    ports:
+      - "9550:3000"
+    networks:
+      - data_network
+
+networks:
+  data_network:
+    external: true
+    name: data_network

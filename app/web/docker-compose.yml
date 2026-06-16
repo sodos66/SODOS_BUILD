@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  sodos_web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sodos_web:latest
+    container_name: sodos_web
+    restart: unless-stopped
+    ports:
+      - "9535:3000"
+    networks:
+      - data_network
+
+networks:
+  data_network:
+    external: true
+    name: data_network
